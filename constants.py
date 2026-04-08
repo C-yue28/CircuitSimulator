@@ -12,6 +12,8 @@ FONT = ("Roboto", 18)
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 700
 
+DEFAULT_FILE = "circuits/new_circuit.circuit"
+
 # file format will be .circuit
 # data stored will simply be:
 # # components

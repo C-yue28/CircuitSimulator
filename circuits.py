@@ -63,13 +63,3 @@ class Circuit:
             self.component_counts[RESISTOR]+=1
         self.size+=1
 
-    def convert(self, c: Resistor):
-        return str(c.start) + "," + str(c.end) + "," + c.id + "," + str(c.R) + "\n"
-
-    def convert(self, c: VoltageSource):
-        return (str(connection) + "," for connection in c.connections) + c.id + "," + c.V + "," + str(c.index) + "\n"
-
-    def write_to_file(self, file: TextIO):
-        file.write(str(self.size)+"\n")
-        for component in self.components:
-            file.write(self.convert(component))
