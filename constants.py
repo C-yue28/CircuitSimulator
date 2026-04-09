@@ -1,17 +1,32 @@
-WIRE = 0
-VOLTAGE_SOURCE = 1
-RESISTOR = 2
-SWITCH = 3
-LED = 4
-TRANSISTOR = 5
-CAPACITOR = 6
-DIODE = 7
+APPLICATION_NAME = "Smart Circuit Simulator"
 
+# component types + defaults
+VOLTAGE_SOURCE = 0
+RESISTOR = 1
+SWITCH = 2
+LED = 3
+TRANSISTOR = 4
+CAPACITOR = 5
+DIODE = 6
+
+DEFAULT_VALUES = [5, 5, 0, 0, 0, 0, 0]
+
+# GUI stuff
 FONT = ("Roboto", 18)
 
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 700
 
+GUI_COMPONENT_WIDTH = 40
+GUI_COMPONENT_HEIGHT = 80
+LINE_WIDTH = 2.5
+
+UP = 0
+LEFT = 1
+DOWN = 2
+RIGHT = 3
+
+# file stuff
 DEFAULT_FILE = "circuits/new_circuit.circuit"
 
 # file format will be .circuit

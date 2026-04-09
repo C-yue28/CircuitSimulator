@@ -1,30 +1,33 @@
-from circuits import *
+from components import *
+from constants import *
 import os
 
-def convert(c: Resistor):
-        return "R," + str(c.start) + "," + str(c.end) + "," + c.id + "," + str(c.R) + "\n"
-
-def convert(c: VoltageSource):
-    return "V," + str(len(c.connections)) + "," + (str(connection) + "," for connection in c.connections) + c.id + "," + str(c.index) + "," + c.V + "\n"
-
 def write_to_file(circuit: Circuit, file: TextIO):
-    file.write(str(circuit.size)+"\n")
+    file.write(str(len(circuit.components))+"\n")
     for component in circuit.components:
-        file.write(convert(component))
+        file.write(component.convert())
+    file.write(str(len(circuit.nodes))+"\n")
+    for node in circuit.nodes:
+        file.write(node.convert())
 
-def read_from_file(circuit: Circuit, file: TextIO):
+def read_from_file(file: TextIO):
     circuit = Circuit()
-    circuit.size = int(file.readline()[0:-2])
-    for i in range(circuit.size):
-        fields = file.readline()[0:-2].split(",")
+    for i in range(int(file.readline())):
+        fields = file.readline().split(",")
         if fields[0] == "R":
-            new_component = Resistor(fields[1], fields[2], fields[3], fields[4])
+            circuit.add_component_from_file_fields(RESISTOR, start=int(fields[1]), end=int(fields[2]), identifier=fields[3], value=int(fields[4]), x=int(fields[5]), y=int(fields[6]), orientation=int(fields[7]))
         elif fields[0] == "V":
-            conn_count = int(fields[1])
-            new_component = VoltageSource((fields[i+2] for i in range(conn_count)), fields[conn_count+2], fields[conn_count+3], fields[conn_count+4])
+            circuit.add_component_from_file_fields(VOLTAGE_SOURCE, start=int(fields[1]), end=int(fields[2]), identifier=fields[3], index=int(fields[4]), value=int(fields[5], x=int(fields[6]), y=int(fields[7])), orientation=int(fields[8]))
+    for i in range(int(file.readline())):
+        nodevals = file.readline().split(",")
+        points = []
+        for i in range(int((len(nodevals)-1)/2)):
+            points.append((nodevals[i+1], nodevals[i+2]))
+        circuit.add_node(points)
+    return circuit
 
 def create_new(obj, newpath):
-    if not obj.file == None and obj.circuit.size > 0:
+    if not obj.file == None and obj.circuit.size() > 0:
         write_to_file(obj.circuit, obj.file)
 
     obj.file.close()
@@ -34,21 +37,23 @@ def create_new(obj, newpath):
     obj.file = open(newpath, "w")
     obj.circuit = Circuit()
 
-def open_existing(obj, circuit: Circuit, path):
-    if not obj.file == None and obj.circuit.size > 0:
+def open_existing(obj, path):
+    if not obj.file == None and obj.circuit.size() > 0:
         write_to_file(obj.circuit, obj.file)
 
     obj.file.close()
-    obj.file = open(path, "w")
+    obj.file = open(path, "r+")
+
+    if os.path.getsize(path) > 0:
+        obj.circuit = read_from_file(obj.file)
+    else:
+        obj.circuit = Circuit()
 
 def rename(obj, oldpath, newpath):
     obj.file.close()
+
     if os.path.exists(newpath):
         os.remove(newpath)
-    os.rename(oldpath, newpath)
-    obj.file = open(newpath, "w")
 
-    if os.path.getsize(newpath) > 0:
-        read_from_file(circuit, file)
-    else:
-        circuit = Circuit()
+    os.rename(oldpath, newpath)
+    obj.file = open(newpath, "a+")
