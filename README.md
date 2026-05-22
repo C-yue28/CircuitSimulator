@@ -1,7 +1,7 @@
 <h1>Circuit Simulator</h1>
 
 <h2>Video Demo URL</h2>
-(OneDrive URL) https://1drv.ms/v/c/5a912cfc994114e9/IQDp6Yg-UpDYSID7_zTMMC2BAQKpQXpDCa5V0dI6FuK0Agc?e=FvA2Qm
+https://youtu.be/dbx7A4s25w4
 <h2>Description:</h2>
 <h3>Project phases</h3>
 <h4>Phase 1</h4>
